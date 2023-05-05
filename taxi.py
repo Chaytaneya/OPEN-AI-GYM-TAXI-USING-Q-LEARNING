@@ -37,7 +37,7 @@ def main():
 
         # reset the environment
         state = world.reset()
-        done = True
+        done = False
 
         for s in range(time_steps):
 
@@ -51,13 +51,7 @@ def main():
 
             # take action and observe reward
 
-            result = world.step(action)
-            new_state = result[0]
-            reward = result[1]
-            done = result[2]
-            info = result[3]
-
-           # new_state, reward, done, info = world.step(action)
+            new_state, reward, done, info = world.step(action)
 
             # Q-learning algorithm
             q_table[state,action] = q_table[state,action] + lr * (reward + dr * np.max(q_table[new_state,:])-q_table[state,action])
@@ -66,7 +60,7 @@ def main():
             state = new_state
 
             # if done, finish episode
-            if done:
+            if done == True:
                 break
 
         # Decrease epsilon
@@ -92,7 +86,7 @@ def main():
         print(f"score: {rewards}")
         state = new_state
 
-        if done:
+        if done == True:
             break
 
     world.close()
